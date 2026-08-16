@@ -1,0 +1,244 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="SmartRetailSystem.Site" %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Retail | Navy Enterprise Dashboard</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --navy-deep: #0f172a; /* Main Navy */
+            --navy-light: #1e293b;
+            --royal-blue: #2563eb;
+            --accent-cyan: #0ea5e9;
+            --white: #ffffff;
+            --silver: #e2e8f0;
+            --gradient-navy: linear-gradient(135deg, #0f172a 0%, #2563eb 100%);
+        }
+
+        body { 
+            font-family: 'Inter', sans-serif; 
+            margin: 0; 
+            background-color: #f8fafc; 
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- Global Navbar --- */
+        .navbar { 
+            background: var(--white); 
+            padding: 1.2rem 5%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.1);
+            position: sticky; top: 0; z-index: 1000;
+            border-bottom: 4px solid var(--navy-deep);
+        }
+
+        /* Heading එක ගොඩක් ලොකු කර ඇත */
+        .brand { 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+            color: var(--navy-deep); 
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 800; 
+            font-size: 2.2rem; /* මීට වඩා ලොකු හෙඩින් එකක් */
+            text-decoration: none;
+            letter-spacing: -1.5px;
+            text-transform: uppercase;
+        }
+        
+        .brand i {
+            color: var(--royal-blue);
+            font-size: 2.5rem;
+            filter: drop-shadow(0 4px 6px rgba(37, 99, 235, 0.2));
+        }
+
+        /* --- Navy Navigation Links --- */
+        .nav-links { display: flex; gap: 12px; align-items: center; }
+        
+        .nav-links a { 
+            color: var(--navy-light); 
+            text-decoration: none; 
+            font-size: 0.95rem; 
+            font-weight: 600;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex; 
+            align-items: center; 
+            gap: 10px;
+            padding: 12px 18px;
+            border-radius: 10px;
+        }
+
+        /* Hover Effect: Navy Glow */
+        .nav-links a:hover { 
+            background: var(--gradient-navy);
+            color: var(--white) !important;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(15, 23, 42, 0.2);
+        }
+
+        .nav-links a:hover i { color: var(--white) !important; }
+
+        .nav-links i { color: var(--royal-blue); font-size: 1.1rem; }
+
+        /* --- User Badge Section --- */
+        .user-section { 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+            padding-left: 20px; 
+            margin-left: 10px; 
+            border-left: 2px solid #e2e8f0;
+        }
+
+        .role-badge { 
+            font-size: 0.8rem; 
+            background: var(--accent-cyan);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-weight: 700; 
+            text-transform: uppercase;
+        }
+
+        .logout-btn { 
+            color: white !important; 
+            background: #ef4444; /* Red for Logout contrast */
+            padding: 10px 20px; 
+            border-radius: 8px; 
+            text-decoration: none; 
+            font-size: 0.9rem;
+            font-weight: 700;
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .logout-btn:hover { 
+            background: #b91c1c;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+
+        /* --- Content Area --- */
+        .main-container { 
+            flex: 1;
+            padding: 3rem 5%; 
+        }
+
+        /* --- Dark Navy Footer --- */
+        footer { 
+            background: var(--navy-deep); 
+            padding: 3.5rem 5%; 
+            text-align: center; 
+            color: #94a3b8; 
+            border-top: 6px solid var(--royal-blue);
+        }
+
+        .footer-title {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            display: block;
+            letter-spacing: -1px;
+        }
+        /* ලින්ක් එක Active වූ විට පෙනෙන ආකාරය */
+.nav-links a.active {
+    background: var(--gradient-navy) !important;
+    color: var(--white) !important;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(15, 23, 42, 0.2);
+}
+
+.nav-links a.active i {
+    color: var(--white) !important;
+}
+    </style>
+    <asp:ContentPlaceHolder ID="head" runat="server"></asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <nav class="navbar">
+            <a href="StaffDashboard.aspx" class="brand">
+                <i class="fas fa-layer-group"></i> SMART RETAIL
+            </a>
+            
+            <div class="nav-links">
+    <asp:PlaceHolder ID="phAdminMenu" runat="server" Visible="false">
+        <a id="lnkOverview" runat="server" href="~/Pages/StaffDashboard.aspx">
+            <i class="fas fa-grid-horizontal"></i> Overview
+        </a>
+        <a id="lnkInventory" runat="server" href="~/Pages/ProductList.aspx">
+            <i class="fas fa-cubes"></i> Inventory
+        </a>
+        <a id="lnkCustomers" runat="server" href="~/Pages/CustomerList.aspx">
+            <i class="fas fa-user-shield"></i> Client Base
+        </a>
+        <a id="lnkSales" runat="server" href="~/Pages/CreateOrder.aspx">
+            <i class="fas fa-file-invoice-dollar"></i> Sales
+        </a>
+        <a id="lnkBilling" runat="server" href="~/Pages/AdminPayment.aspx">
+            <i class="fas fa-credit-card"></i> Billing
+        </a>
+        <a id="lnkLogistics" runat="server" href="~/Pages/AssignDelivery.aspx">
+            <i class="fas fa-truck-fast"></i> Logistics
+        </a>
+        <a id="lnkFinance" runat="server" href="~/Pages/CreditControl.aspx">
+            <i class="fas fa-hand-holding-dollar"></i> Finance
+        </a>
+        <a id="lnkReports" runat="server" href="~/Pages/Reports.aspx">
+            <i class="fas fa-chart-mixed"></i> Analytics
+        </a>
+    </asp:PlaceHolder>
+
+    <asp:PlaceHolder ID="phCustomerMenu" runat="server" Visible="false">
+        <a id="lnkCustHome" runat="server" href="~/Pages/CustomerDashboard.aspx">
+            <i class="fas fa-house"></i> Home
+        </a>
+        <a id="lnkCustOrder" runat="server" href="~/Pages/CreateOrder.aspx">
+            <i class="fas fa-cart-shopping"></i> New Order
+        </a>
+        <a id="lnkCustTrack" runat="server" href="~/Pages/CustomerOrders.aspx">
+            <i class="fas fa-box-open"></i> Tracking
+        </a>
+    </asp:PlaceHolder>
+
+    <asp:PlaceHolder ID="phDeliveryMenu" runat="server" Visible="false">
+        <a id="lnkDelivery" runat="server" href="~/Pages/DeliveryDashboard.aspx">
+            <i class="fas fa-location-arrow"></i> Assignments
+        </a>
+    </asp:PlaceHolder>
+    
+    <div class="user-section">
+        <asp:Label ID="lblUserRole" runat="server" CssClass="role-badge"></asp:Label>
+        <asp:LinkButton ID="lnkLogout" runat="server" OnClick="lnkLogout_Click" CssClass="logout-btn">
+            <i class="fas fa-sign-out-alt"></i> EXIT
+        </asp:LinkButton>
+    </div>
+</div>
+        </nav>
+
+        <main class="main-container">
+            <asp:ContentPlaceHolder ID="MainContent" runat="server">
+            </asp:ContentPlaceHolder>
+        </main>
+
+        <footer>
+            <span class="footer-title">SMART RETAIL ENTERPRISE</span>
+            <div style="font-size: 1.5rem; margin-bottom: 20px; color: var(--silver);">
+                <i class="fab fa-linkedin"></i> &nbsp; <i class="fab fa-github"></i> &nbsp; <i class="fab fa-google-pay"></i>
+            </div>
+            <p>&copy; 2026 Smart Retail Systems. Built for High Performance.</p>
+        </footer>
+    </form>
+</body>
+</html>
